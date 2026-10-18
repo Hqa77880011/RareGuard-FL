@@ -229,8 +229,9 @@ def run(args):
                 updates[slot] *= args.attack_scale
             elif args.attack == "mimicry":
                 rare = torch.isin(audit_y, torch.tensor(args.rare_labels, device=device))
-                rare_direction = -gradient_vector(model, audit_x[rare], audit_y[rare])
-                common_direction = gradient_vector(model, audit_x[~rare], audit_y[~rare])
+                target_labels = torch.full_like(audit_y[rare], args.attack_target)
+                rare_direction = -gradient_vector(model, audit_x[rare], target_labels)
+                common_direction = -gradient_vector(model, audit_x[~rare], audit_y[~rare])
                 direction = rare_direction / rare_direction.norm().clamp_min(1e-12)
                 direction = direction + args.mimic_strength * common_direction / common_direction.norm().clamp_min(1e-12)
                 updates[slot] = direction / direction.norm().clamp_min(1e-12) * radius

@@ -130,3 +130,5 @@ python -m rareguard plot --metrics outputs/rareguard_0/metrics.json outputs/trim
 Plotting produces primary-metric comparisons, communication curves and `summary.json` grouped by method and Byzantine fraction. Supply repeated seeds from the same dataset/attack/partition convention for mean and sample-standard-deviation bars. Group fractions separately when constructing a stress curve; the JSON preserves those groups.
 
 Source files implement data preparation, the audit solver and capped weights, model/training/evaluation, and CLI/plotting. GitHub Actions checks dependency installation, compilation and imports without launching training.
+
+The `mimicry` attack descends cross-entropy toward `--attack-target` on rare audit examples and blends a normalized honest descent direction on ordinary examples with `--mimic-strength`. The result is norm-matched to the round clipping radius. This declared targeted threat uses the audit inputs, never test examples; its success metric is the fraction of rare test examples classified as the registered ordinary target.
